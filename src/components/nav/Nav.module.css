@@ -1,6 +1,12 @@
-.div{
-    background-color:#754e88;
-    margin-bottom: 5%;
-   
-}
-
+.content_search{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+ }
+ .link{
+    color: aliceblue;
+    text-decoration: none;
+    border-radius: 5px;
+    background: black;
+    padding: 5px;
+ }

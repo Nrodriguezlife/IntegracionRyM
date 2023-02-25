@@ -1,74 +1,80 @@
-import s from './Card.module.css';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import 
+import { Link } from 'react-router-dom'
+import styles from './card.module.css'
+import { connect } from 'react-redux'
+import { useState, useEffect } from "react";
+import {addFavorite,deleteFavorite} from '../redux/action/action'
 
-import { addFavorite, deleteFavorite } from '../actions';
-import { connect, Connect } from 'react-redux';
-import { useEffect, useState } from 'react';
-
-export  function Card(props) {
-   conste [isFav, setIsFav] = useState(false);
+export function Card(props) {
+   const [isFav, setIsFav] = useState(false);
 
    function handleFavorite(){
       if(isFav){
-         setIsFav(false);
-         props.deleteFavorite(prop.id);
-
-      }else{
-         setIsFav(true);
-         props.addFavorite(props)
+         setIsFav(false)
+         props.deleteFavorite(props.id)
+      }else {
+         setIsFav(true)
+         const character = {
+            key:props.id,
+            id: props.id,
+            name: props.name,
+            image: props.image,
+            species: props.species,
+            gender: props.gender,
+          };
+          props.addFavorite(character)
       }
    }
-   useEffect(()=>{
-      props.myFavorites.length?.forEach((fav) => {
-         if (fav.id === props.id){
-            setIsFav(true);
-         }
-      }),
-   },[props.myFavorites]);
+   
+   useEffect(() => {
+      props.myFavorites?.forEach((fav) => {
+            if (fav.id === props.id) {
+               setIsFav(true);
+            }
+         });
+      }, [props.myFavorites]);
 
-   return (
-//{
-//   isFav ? (
- //     <button onClick={handleFavorite}//>❤️</button>
- //  ) : (
- //     <button onClick={handleFavorite}//>🤍</button>
- //  );
-//}      
-      <div className={s.div}> 
-      <button onClick={()=>props.onClose()} className={s.close}>X</button>   
-      <img className={s.imgRedonda} src={props.image} alt=" " />
-      
-      
-       <Link to={`/detail/${props.id}`}>
-         <h2 className={s.name}>{props.name}</h2>
+   return <div className={`${styles.card}`} >
+               <div style={{display:"flex",justifyContent:"flex-start",position:"absolute"}}>
+            {isFav ? (
+               <button onClick={handleFavorite}>❤️</button>
+            ) : (
+               <button onClick={handleFavorite}>🤍</button>
+            )}
+         </div>
+         <button onClick={props.onClose} className={`${styles.close}`}>
+            <span className={`${styles.x}`}>x</span>
+         </button>
+         <img  src={props.image} alt={props.name} />
+         <Link to={`/detail/${props.id}`} style={{"textDecoration":"none"}}>
+         <h4 className={`${styles.name}`}>{props.name}</h4>
          </Link>
-      
-        <div  className={s.divH2} >
-          <h2 className={s.h2}>{props.species} </h2>
-          <h2 className={s.h2}>{props.gender}</h2>
-          </div>
+         <div className={`${styles.content_span}`}>
+         <span>{props.species}</span>
+         <span>{props.gender}</span>
+         </div>
+        
+         
       </div>
-   );
+}
+
+export function mapStateToProps (state){
+   return {
+      myFavorites: state.myFavorites
+   }
 }
 
 export function mapDispatchToProps(dispatch){
    return {
       addFavorite: function(fav){
+         console.log("pasamos por dispatch")
          dispatch(addFavorite(fav))
       },
       deleteFavorite: function(id){
-         dispatch (deleteFavorite(id))
+         dispatch(deleteFavorite(id))
       }
-   }   
-
-}
-export function mapStateToProps(){
-   return {
-      myFavorites: State.myFavorites 
    }
-
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (Card)
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Card);

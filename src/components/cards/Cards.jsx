@@ -1,20 +1,22 @@
-import { Card }from '../card/Card.jsx';
-import s from './Cards.module.css';
+import Card from '../card/Card';
+import styles from './cards.module.css'
 
 export default function Cards(props) {
-   const { characters, onClose } = props;
-   
-   return <div className={s.div}>
-       {characters.map(character=> 
-         < Card key={character.name}
-           // id={char.id}
-            name={character.name}
-            species={character.species}
-            gender={character.gender}
-            image={character.image}
-            id={character.id}
-            //onClose={props.onClose}---> la linea de abajo se puede escribir asi tambien
-            onClose={() => onClose(character.id) }
-         />)}
+   let id=0;
+   const { characters,onClose} = props;
+   return <div className={`${styles.content_cards}`} >
+      {
+         characters.map(cur=>
+            <Card 
+            key={id+=1}
+            name={cur.name}
+            species={cur.species}
+            gender={cur.gender}
+            image={cur.image}
+            onClose={()=>onClose(cur.id)}
+            id={cur.id}
+            />
+         )
+      }
    </div>;
 }

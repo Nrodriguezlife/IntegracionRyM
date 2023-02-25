@@ -1,21 +1,23 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { Link } from 'react-router-dom';
-import s from './Detail.module.css';
+import { useEffect, useState  } from 'react';
+import { useParams ,useNavigate } from 'react-router-dom';
+import styles from './detail.module.css'
+//import { Link } from 'react-router-dom'
 
 export default function Detail() {
-    
-    
-    const [character, setCharacter]= useState({});
-    
 
-    const {detailId} = useParams(); // estoy capturando la ruta del id
-    
-    //este codigo de abajo es el que buscarar el personaja de la API
-   
+    const {detailId}=useParams()
+    const [character,setCharacter]=useState({})
+    // console.log(typeof character.origin ==="object")
+    const navigate=useNavigate();
+    const handleClick=()=>navigate("/home");
+
     useEffect(() => {
-        fetch(`https://rickandmortyapi.com/api/character/${detailId}`)
+       //front
+       //fetch(`https://rickandmortyapi.com/api/character/${detailId}`)
+       //back promesas
+       //fetch(`http://localhost:3001/rickandmorty/detail/${detailId}`)
+       //Express
+         fetch(`http://localhost:3001/rickandmorty/detail/${detailId}`)
           .then((response) => response.json())
           .then((char) => {
             if (char.name) {
@@ -31,25 +33,29 @@ export default function Detail() {
       }, [detailId]);
 
   return (
-    
-    <div className={s.container}>
-     
-      <img className={s.image} src={character.image} alt='imagen not found' />        
-        
-    <div >
-    <h1 className={s.title}>{character.name}</h1> 
-       <h2 className={s.detail}>{character.status}
-         {character.specie}</h2>
-         <h2 className={s.detail}>{character.gender}</h2>
-         <h2 className={s.detail}>{character.origin?.name}</h2>
-         <h2 className={s.detail}>{character.location?.name}</h2>
-      </div>
-      
-    <Link to='/home'><button className={s.button}>Volver</button></Link>
-    </div>
-        
-        
-         
-   
+
+    // <div>{character?
+        <div className={`${styles.contain}`}>
+          <div className={`${styles.card}`}>
+          <h1>{character.name}</h1>
+        <h5>{character.status} </h5>
+        <h5>{character.species} </h5>
+        <h5>{character.gender} </h5>
+        <h5>{character.origin?.name} </h5>
+        <img src={character.image} alt="" />
+        {/* <Link to="/home">
+        <button >
+            <h3>Home</h3>
+        </button>
+        </Link> */}
+
+        {/* </div>:""}   */}
+
+        <button onClick={handleClick}>HOME</button>
+          </div>
+
+        </div>
+
+
   )
 }
